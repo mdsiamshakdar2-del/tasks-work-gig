@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Tasks work gig</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="//libtl.com/sdk.js" data-zone="11743827" data-sdk="show_11743827"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Poppins:wght@400;500;600&display=swap');
+body{
+  font-family:'Poppins',sans-serif;background:#0d0f18;
+  background-image:radial-gradient(circle at 10% 20%,rgba(120,0,255,.15) 0%,transparent 40%),
+  radial-gradient(circle at 90% 80%,rgba(0,240,255,.15) 0%,transparent 40%);
+  min-height:100vh;color:#fff;
+}
+.heading-font{font-family:'Orbitron',sans-serif}
+.cyber-card{background:rgba(20,24,41,.78);backdrop-filter:blur(16px);
+ border:1px solid rgba(255,255,255,.08);border-radius:24px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.cyber-btn{background:linear-gradient(135deg,#7928ca 0%,#ff0080 100%);
+ transition:.3s;box-shadow:0 4px 15px rgba(255,0,128,.35)}
+.action-btn{background:linear-gradient(135deg,#00f0ff 0%,#7928ca 100%)}
+.footer-tab.active{color:#ff0080;background:rgba(255,0,128,.1);border-radius:14px}
+input,select{color-scheme:dark}
+.hidden{display:none!important}</style>
+</head>
+
+<body class="flex flex-col min-h-screen pb-24">
+
+<header class="w-full max-w-md mx-auto p-4">
+  <div class="cyber-card p-4 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="relative">
+        <img id="userPhoto" src="profile.png"
+             onerror="this.src='https://via.placeholder.com/80/111827/ffffff?text=TWG'"
+             class="w-13 h-13 rounded-2xl border-2 border-pink-500 object-cover shadow-lg">
+        <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-[#0d0f18] rounded-full"></span>
+      </div>
+      <div>
+        <h1 class="font-bold text-base tracking-wide">Tasks work gig</h1>
+        <p class="text-xs text-cyan-400 font-mono">@Tasksworkgig</p>
+      </div>
+    </div>
+    <div class="text-right">
+      <span class="text-[10px] uppercase tracking-wider text-gray-400 block heading-font">Balance</span>
+      <span id="balance" class="text-xl font-extrabold text-cyan-300 heading-font">0 BDT</span>
+    </div>
+  </div>
+</header>
+
+<main class="w-full max-w-md mx-auto px-4 flex-grow space-y-4">
+
+<!-- HOME -->
+<div id="content-dash" class="space-y-4">
+  <div class="cyber-card p-6 text-center relative overflow-hidden">
+    <div class="absolute -right-10 -top-10 w-32 h-32 bg-pink-500/10 rounded-full blur-2xl"></div>
+    <h2 class="text-xl font-bold heading-font text-pink-400 mb-1">Tasks work gig</h2>
+    <p class="text-xs text-gray-300 mb-5">Complete tasks • Watch ads • Earn money</p>
+
+    <div class="grid grid-cols-3 gap-2">
+      <div class="bg-black/30 border border-white/5 p-2.5 rounded-2xl">
+        <span class="text-[10px] text-gray-400 block">Tasks</span>
+        <span id="totalTasks" class="text-lg font-bold heading-font text-cyan-400">0</span>
+      </div>
+      <div class="bg-black/30 border border-white/5 p-2.5 rounded-2xl">
+        <span class="text-[10px] text-gray-400 block">Ads</span>
+        <span id="totalAds" class="text-lg font-bold heading-font text-pink-400">0</span>
+      </div>
+      <div class="bg-black/30 border border-white/5 p-2.5 rounded-2xl">
+        <span class="text-[10px] text-gray-400 block">Refs</span>
+        <span id="totalRefs" class="text-lg font-bold heading-font text-yellow-400">0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cyber-card p-4 border-l-4 border-l-cyan-400">
+    <div class="flex items-center space-x-3">
+      <i class="fas fa-shield-alt text-2xl text-cyan-400"></i>
+      <div>
+        <h4 class="text-sm font-bold">Payment System</h4>
+        <p class="text-xs text-gray-400">Minimum withdrawal is 10 BDT. Payment method: bKash / Nagad.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TASKS: ONLY ADS -->
+<div id="content-earn" class="space-y-4 hidden">
+  <div class="cyber-card p-5 text-center">
+    <div class="w-12 h-12 bg-pink-500/20 text-pink-400 rounded-2xl flex items-center justify-center mx-auto mb-3 text-xl">
+      <i class="fas fa-play"></i>
+    </div>
+    <h3 class="font-bold text-sm mb-1">Watch Ads & Earn</h3>
+    <p class="text-xs text-gray-400 mb-1">Earn 0.10 BDT for every successfully completed ad.</p>
+    <p class="text-[10px] text-yellow-400 mb-4">Monetag Zone: 11743827</p>
+    <button id="watchAdBtn" class="cyber-btn w-full py-3 rounded-xl font-bold text-sm tracking-wide">
+      Start Watching Ads
+    </button>
+  </div>
+
+  <div class="cyber-card p-4">
+    <div class="flex items-center gap-3">
+      <i class="fas fa-circle-info text-cyan-400"></i>
+      <p class="text-xs text-gray-400">Complete ads, invite users and earn rewards.</p>
+    </div>
+  </div>
+</div>
+
+<!-- REFERRAL -->
+<div id="content-ref" class="space-y-4 hidden">
+  <div class="cyber-card p-5">
+    <div class="text-center">
+      <div class="w-14 h-14 bg-cyan-500/10 text-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl">
+        <i class="fas fa-users"></i>
+      </div>
+      <h3 class="font-bold text-base">Refer & Earn</h3>
+      <p class="text-xs text-gray-400 mt-1">Earn 3 BDT when your referred user personally earns 10 BDT.</p>
+    </div>
+
+    <div class="mt-5">
+      <label class="text-[11px] text-gray-300 block mb-1">Your Referral Link</label>
+      <div class="bg-black/40 p-3 rounded-xl border border-white/10 flex items-center justify-between">
+        <span id="refLink" class="text-xs font-mono text-cyan-300 truncate mr-2">Loading...</span>
+        <button onclick="copyRefLink()" class="bg-pink-600 text-xs px-3 py-1.5 rounded-lg font-bold">Copy</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 mt-4">
+      <div class="bg-black/30 p-3 rounded-xl border border-white/5">
+        <span class="text-[10px] text-gray-400 block">Total Referrals</span>
+        <span id="refCount" class="text-lg font-bold text-yellow-400 heading-font">0</span>
+      </div>
+      <div class="bg-black/30 p-3 rounded-xl border border-white/5">
+        <span class="text-[10px] text-gray-400 block">Referral Earnings</span>
+        <span id="refEarnings" class="text-lg font-bold text-cyan-400 heading-font">0 BDT</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WITHDRAW -->
+<div id="content-cash" class="space-y-4 hidden">
+  <div class="cyber-card p-5">
+    <h3 class="font-bold text-sm mb-4 flex items-center">
+      <i class="fas fa-wallet mr-2 text-pink-400"></i> Withdraw Funds
+    </h3>
+
+    <div class="bg-black/40 border border-white/5 p-4 rounded-2xl text-center mb-4">
+      <span class="text-[11px] text-gray-400 block">Available Balance</span>
+      <span id="withdrawBalance" class="text-2xl font-extrabold text-yellow-300 heading-font">0 BDT</span>
+      <span class="text-[10px] text-gray-500 block mt-1">Minimum Withdrawal: 10 BDT</span>
+    </div>
+
+    <div class="space-y-3">
+      <div>
+        <label class="text-[11px] text-gray-300 block mb-1">Payment Method</label>
+        <select id="payMethod" class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs outline-none">
+          <option value="bkash">bKash</option>
+          <option value="nagad">Nagad</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-[11px] text-gray-300 block mb-1">Account Number</label>
+        <input type="tel" id="payNumber" maxlength="11" placeholder="01XXXXXXXXX"
+               class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs outline-none">
+      </div>
+      <div>
+        <label class="text-[11px] text-gray-300 block mb-1">Withdrawal Amount</label>
+        <input type="number" id="payAmount" min="10" step="1" placeholder="10"
+               class="w-full bg-black/50 border border-white/10 rounded-xl p-2.5 text-xs outline-none">
+      </div>
+      <button onclick="requestPayout()" class="cyber-btn w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider">
+        Submit Withdrawal Request
+      </button>
+    </div>
+  </div>
+
+  <div class="cyber-card p-4">
+    <h4 class="font-bold text-sm mb-2">Withdrawal Requests</h4>
+    <div id="withdrawHistory" class="space-y-2"></div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="content-admin" class="space-y-4 hidden">
+  <div class="cyber-card p-5">
+    <h3 class="font-bold text-base flex items-center">
+      <i class="fas fa-user-shield mr-2 text-yellow-400"></i> Admin Panel
+    </h3>
+    <p class="text-xs text-gray-400 mt-2">Local admin view for testing. Real multi-user admin requires a backend/database.</p>
+
+    <div class="grid grid-cols-2 gap-3 mt-4">
+      <div class="bg-black/30 p-3 rounded-xl"><span class="text-[10px] text-gray-400 block">Balance</span><b id="adminBalance">0 BDT</b></div>
+      <div class="bg-black/30 p-3 rounded-xl"><span class="text-[10px] text-gray-400 block">Ads</span><b id="adminAds">0</b></div>
+      <div class="bg-black/30 p-3 rounded-xl"><span class="text-[10px] text-gray-400 block">Referrals</span><b id="adminRefs">0</b></div>
+      <div class="bg-black/30 p-3 rounded-xl"><span class="text-[10px] text-gray-400 block">Ref Earn</span><b id="adminRefEarn">0 BDT</b></div>
+    </div>
+
+    <div class="mt-5">
+      <h4 class="font-bold text-sm mb-2">Withdrawal Requests</h4>
+      <div id="adminWithdrawals" class="space-y-2"></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto p-3 z-50">
+  <div class="cyber-card p-2 flex justify-around items-center">
+    <button onclick="switchTab('dash')" id="btn-dash" class="footer-tab active flex flex-col items-center py-2 px-3">
+      <i class="fas fa-home text-base mb-1"></i><span class="text-[10px]">Home</span>
+    </button>
+    <button onclick="switchTab('earn')" id="btn-earn" class="footer-tab flex flex-col items-center py-2 px-3 text-gray-400">
+      <i class="fas fa-tasks text-base mb-1"></i><span class="text-[10px]">Tasks</span>
+    </button>
+    <button onclick="switchTab('ref')" id="btn-ref" class="footer-tab flex flex-col items-center py-2 px-3 text-gray-400">
+      <i class="fas fa-users text-base mb-1"></i><span class="text-[10px]">Refer</span>
+    </button>
+    <button onclick="switchTab('cash')" id="btn-cash" class="footer-tab flex flex-col items-center py-2 px-3 text-gray-400">
+      <i class="fas fa-wallet text-base mb-1"></i><span class="text-[10px]">Withdraw</span>
+    </button>
+  </div>
+</nav>
+
+<script>
+const AD_REWARD = 0.10;
+const REF_REWARD = 3;
+const REF_UNLOCK_EARNING = 10;
+const MIN_WITHDRAW = 10;
+const BOT_USERNAME = "Tasksworkgigbot";
+const ADMIN_ID = ""; // আপনার Telegram numeric ID এখানে বসাবেন
+
+let user = {
+  balance: Number(localStorage.getItem("twg_balance") || 0),
+  ads: Number(localStorage.getItem("twg_ads") || 0),
+  refs: Number(localStorage.getItem("twg_refs") || 0),
+  refEarnings: Number(localStorage.getItem("twg_ref_earn") || 0),
+  withdrawals: JSON.parse(localStorage.getItem("twg_withdrawals") || "[]")
+};
+
+function money(n){ return Number(n || 0).toFixed(2).replace(/\.00$/,""); }
+
+function save(){
+  localStorage.setItem("twg_balance", user.balance);
+  localStorage.setItem("twg_ads", user.ads);
+  localStorage.setItem("twg_refs", user.refs);
+  localStorage.setItem("twg_ref_earn", user.refEarnings);
+  localStorage.setItem("twg_withdrawals", JSON.stringify(user.withdrawals));
+  refreshUI();
+}
+
+function getTelegramUser(){
+  try{
+    return window.Telegram?.WebApp?.initDataUnsafe?.user || null;
+  }catch(e){ return null; }
+}
+
+function setupTelegram(){
+  try{
+    if(window.Telegram?.WebApp){
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
+  }catch(e){}
+}
+
+function setupReferral(){
+  const tg = getTelegramUser();
+  const id = tg?.id;
+  document.getElementById("refLink").innerText =
+    id ? `https://t.me/${BOT_USERNAME}?start=ref_${id}` :
+         `https://t.me/${BOT_USERNAME}?start=ref_guest`;
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  setupTelegram();
+  setupReferral();
+  refreshUI();
+
+  document.getElementById("watchAdBtn").addEventListener("click", watchAd);
+});
+
+function watchAd(){
+  const fn = window["show_11743827"];
+  if(typeof fn !== "function"){
+    alert("Ad is loading. Please wait a few seconds and try again.");
+    return;
+  }
+
+  const btn = document.getElementById("watchAdBtn");
+  btn.disabled = true;
+  btn.innerText = "Loading Ad...";
+
+  Promise.resolve(fn()).then(()=>{
+    user.balance += AD_REWARD;
+    user.ads += 1;
+    save();
+    alert("Success! 0.10 BDT added.");
+  }).catch(()=>{
+    alert("Ad could not be completed. Please try again.");
+  }).finally(()=>{
+    btn.disabled = false;
+    btn.innerText = "Start Watching Ads";
+  });
+}
+
+function switchTab(tabId){
+  ["dash","earn","ref","cash","admin"].forEach(t=>{
+    const c=document.getElementById("content-"+t);
+    const b=document.getElementById("btn-"+t);
+    if(c)c.classList.add("hidden");
+    if(b){b.classList.remove("active");b.classList.add("text-gray-400")}
+  });
+  const c=document.getElementById("content-"+tabId);
+  const b=document.getElementById("btn-"+tabId);
+  if(c)c.classList.remove("hidden");
+  if(b){b.classList.add("active");b.classList.remove("text-gray-400")}
+  if(tabId==="cash") renderWithdrawals();
+  if(tabId==="admin") renderAdmin();
+}
+
+function copyRefLink(){
+  const text=document.getElementById("refLink").innerText;
+  navigator.clipboard?.writeText(text).then(()=>alert("Referral link copied."));
+}
+
+function requestPayout(){
+  const method=document.getElementById("payMethod").value;
+  const num=document.getElementById("payNumber").value.trim();
+  const amount=Number(document.getElementById("payAmount").value);
+
+  if(!/^01[3-9]\d{8}$/.test(num)){
+    alert("Please enter a valid 11-digit Bangladesh mobile number.");
+    return;
+  }
+  if(!Number.isFinite(amount) || amount < MIN_WITHDRAW){
+    alert("Minimum withdrawal is 10 BDT.");
+    return;
+  }
+  if(amount > user.balance){
+    alert("Insufficient balance.");
+    return;
+  }
+
+  const request={
+    id:"WD"+Date.now(),
+    method, number:num, amount,
+    status:"Pending",
+    date:new Date().toLocaleString()
+  };
+
+  user.balance -= amount;
+  user.withdrawals.unshift(request);
+  save();
+
+  document.getElementById("payNumber").value="";
+  document.getElementById("payAmount").value="";
+  alert("Withdrawal request submitted successfully.");
+  renderWithdrawals();
+}
+
+function renderWithdrawals(){
+  const box=document.getElementById("withdrawHistory");
+  if(!user.withdrawals.length){
+    box.innerHTML='<p class="text-xs text-gray-500">No withdrawal requests yet.</p>';
+    return;
+  }
+  box.innerHTML=user.withdrawals.map(w=>`
+    <div class="bg-black/30 border border-white/5 rounded-xl p-3 text-xs">
+      <div class="flex justify-between">
+        <b>${w.method.toUpperCase()} • ${money(w.amount)} BDT</b>
+        <span class="text-yellow-400">${w.status}</span>
+      </div>
+      <p class="text-gray-500 mt-1">${w.number} • ${w.date}</p>
+    </div>`).join("");
+}
+
+function renderAdmin(){
+  document.getElementById("adminBalance").innerText=money(user.balance)+" BDT";
+  document.getElementById("adminAds").innerText=user.ads;
+  document.getElementById("adminRefs").innerText=user.refs;
+  document.getElementById("adminRefEarn").innerText=money(user.refEarnings)+" BDT";
+
+  const box=document.getElementById("adminWithdrawals");
+  if(!user.withdrawals.length){
+    box.innerHTML='<p class="text-xs text-gray-500">No requests.</p>';
+    return;
+  }
+  box.innerHTML=user.withdrawals.map(w=>`
+    <div class="bg-black/30 border border-white/5 rounded-xl p-3 text-xs">
+      <div class="flex justify-between">
+        <b>${w.method.toUpperCase()} • ${money(w.amount)} BDT</b>
+        <span class="text-yellow-400">${w.status}</span>
+      </div>
+      <p class="text-gray-400 mt-1">Account: ${w.number}</p>
+      <p class="text-gray-500">${w.date}</p>
+    </div>`).join("");
+}
+
+function refreshUI(){
+  document.getElementById("balance").innerText=money(user.balance)+" BDT";
+  document.getElementById("withdrawBalance").innerText=money(user.balance)+" BDT";
+  document.getElementById("totalTasks").innerText=1;
+  document.getElementById("totalAds").innerText=user.ads;
+  document.getElementById("totalRefs").innerText=user.refs;
+  document.getElementById("refCount").innerText=user.refs;
+  document.getElementById("refEarnings").innerText=money(user.refEarnings)+" BDT";
+}
+</script>
+</body>
+</html>
